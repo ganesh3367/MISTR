@@ -7,10 +7,10 @@ export default function TimerDisplay({ minutes, seconds, mode }) {
       <Text style={styles.modeText}>
         {mode === 'study' ? 'Study Time' : 'Break Time'}
       </Text>
-      <Text style={styles.timerText}>
+      {/* <Text style={styles.timerText}>
         {String(minutes).padStart(2, '0')}:
         {String(seconds).padStart(2, '0')}
-      </Text>
+      </Text> */}
     </View>
   );
 }

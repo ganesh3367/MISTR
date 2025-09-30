@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native'
-import Controls from 'my-app/control.js';
+import Controls from './control.js';
 import TimerDisplay from './Timer_display';
-// ...existing code...
 
 export default function App() {
   return (

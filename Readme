@@ -1,1 +1,26 @@
-MAD PROJECT
+📚 Study Timer App
+
+A clean and minimal productivity timer designed to help students stay focused using the Pomodoro Technique.
+Track your study sessions, break times, and daily performance with an intuitive UI.
+
+🚀 Features
+
+⏱ Customizable Study & Break Timers
+
+🔄 Auto-Switch Between Study and Break Sessions
+
+📊 Session History / Daily Progress Tracking
+
+🔔 Sound Alerts & Notifications
+
+🌙 Dark & Light Mode
+
+📱 Fully Responsive UI (Mobile + Desktop)
+
+🛠 Tech Stack
+
+Frontend: HTML, CSS, JavaScript / React (write whichever you used)
+
+State Management: LocalStorage / React Hooks
+
+Styling: CSS / Tailwind (your choice)

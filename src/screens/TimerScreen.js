@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Vibration } from 'react-native';
 import { theme } from '../constants/theme';
-import CircularTimer from '../components/CircularTimer';
 import Button from '../components/Button';
 import Card from '../components/Card';
 
@@ -9,7 +8,7 @@ export default function TimerScreen() {
     const [minutes, setMinutes] = useState(25);
     const [secondsLeft, setSecondsLeft] = useState(25 * 60);
     const [isActive, setIsActive] = useState(false);
-    const [mode, setMode] = useState('focus'); // focus, shortBreak, longBreak
+    const [mode, setMode] = useState('focus');
     const intervalRef = useRef(null);
 
     useEffect(() => {
@@ -62,11 +61,8 @@ export default function TimerScreen() {
             </View>
 
             <View style={styles.timerContainer}>
-                <CircularTimer progress={progress} />
-                <View style={styles.timeWrapper}>
-                    <Text style={styles.timeText}>{formatTime(secondsLeft)}</Text>
-                    <Text style={styles.modeText}>{mode === 'focus' ? 'Focus' : 'Break'}</Text>
-                </View>
+                <Text style={styles.timeText}>{formatTime(secondsLeft)}</Text>
+                <Text style={styles.modeText}>{mode === 'focus' ? 'Focus' : 'Break'}</Text>
             </View>
 
             <View style={styles.controls}>
@@ -124,20 +120,17 @@ const styles = StyleSheet.create({
     timerContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative',
         marginBottom: theme.spacing.xl,
-    },
-    timeWrapper: {
-        position: 'absolute',
-        alignItems: 'center',
+        paddingVertical: theme.spacing.xl * 2,
     },
     timeText: {
-        fontSize: 48,
+        fontSize: 80,
         fontWeight: '800',
         color: theme.colors.text,
+        marginBottom: theme.spacing.s,
     },
     modeText: {
-        ...theme.typography.body,
+        ...theme.typography.h3,
         color: theme.colors.textSecondary,
     },
     controls: {

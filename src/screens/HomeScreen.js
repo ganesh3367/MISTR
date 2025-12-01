@@ -1,27 +1,55 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { theme } from '../constants/theme';
 import Card from '../components/Card';
 import Button from '../components/Button';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen({ onNavigate }) {
+    const getGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour < 12) return 'Good Morning';
+        if (hour < 18) return 'Good Afternoon';
+        return 'Good Evening';
+    };
+
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.header}>
-                <Text style={styles.greeting}>Good Morning,</Text>
-                <Text style={styles.title}>Ready to focus?</Text>
+                <View>
+                    <Text style={styles.greeting}>{getGreeting()},</Text>
+                    <Text style={styles.title}>Ready to focus?</Text>
+                </View>
+                <TouchableOpacity style={styles.profileButton}>
+                    <Ionicons name="person-circle-outline" size={40} color={theme.colors.primary} />
+                </TouchableOpacity>
             </View>
 
             <Card style={styles.heroCard}>
-                <Text style={styles.heroTitle}>Daily Goal</Text>
-                <Text style={styles.heroSubtitle}>You've completed 2 hours of study today. Keep it up!</Text>
-                <View style={styles.progressBar}>
-                    <View style={[styles.progressFill, { width: '60%' }]} />
+                <View style={styles.heroContent}>
+                    <View style={styles.heroTextContainer}>
+                        <Text style={styles.heroTitle}>Daily Goal</Text>
+                        <Text style={styles.heroSubtitle}>2h 30m / 4h goal</Text>
+                    </View>
+                    <View style={styles.heroIcon}>
+                        <Ionicons name="trophy" size={32} color="#FFD700" />
+                    </View>
                 </View>
+
+                <View style={styles.progressBarContainer}>
+                    <View style={styles.progressBar}>
+                        <View style={[styles.progressFill, { width: '62%' }]} />
+                    </View>
+                    <Text style={styles.progressText}>62%</Text>
+                </View>
+
+                <Text style={styles.motivationText}>You're doing great! Keep the momentum going.</Text>
+
                 <Button
-                    title="Continue Studying"
+                    title="Start Session"
                     onPress={() => onNavigate('timer')}
                     style={styles.heroBtn}
+                    textStyle={styles.heroBtnText}
                 />
             </Card>
 
@@ -29,29 +57,49 @@ export default function HomeScreen({ onNavigate }) {
             <View style={styles.grid}>
                 <TouchableOpacity style={styles.actionItem} onPress={() => onNavigate('planner')}>
                     <Card style={styles.actionCard}>
-                        <Text style={styles.actionIcon}>📝</Text>
+                        <View style={[styles.iconContainer, { backgroundColor: '#E0E7FF' }]}>
+                            <Ionicons name="calendar" size={24} color={theme.colors.primary} />
+                        </View>
                         <Text style={styles.actionLabel}>Plan Tasks</Text>
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionItem} onPress={() => onNavigate('stats')}>
                     <Card style={styles.actionCard}>
-                        <Text style={styles.actionIcon}>📊</Text>
+                        <View style={[styles.iconContainer, { backgroundColor: '#DCFCE7' }]}>
+                            <Ionicons name="bar-chart" size={24} color={theme.colors.success} />
+                        </View>
                         <Text style={styles.actionLabel}>View Stats</Text>
                     </Card>
                 </TouchableOpacity>
             </View>
 
-            <Text style={styles.sectionTitle}>Recent Tasks</Text>
+            <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Recent Tasks</Text>
+                <TouchableOpacity onPress={() => onNavigate('planner')}>
+                    <Text style={styles.seeAll}>See All</Text>
+                </TouchableOpacity>
+            </View>
+
             <Card style={styles.taskCard}>
                 <View style={styles.taskRow}>
-                    <View style={styles.dot} />
-                    <Text style={styles.taskText}>Complete Math Chapter 5</Text>
+                    <View style={[styles.checkbox, { borderColor: theme.colors.success }]}>
+                        <Ionicons name="checkmark" size={14} color={theme.colors.success} />
+                    </View>
+                    <Text style={[styles.taskText, styles.completedTask]}>Complete Math Chapter 5</Text>
                 </View>
+                <View style={styles.divider} />
                 <View style={styles.taskRow}>
-                    <View style={styles.dot} />
+                    <View style={styles.checkbox} />
                     <Text style={styles.taskText}>Review Physics Notes</Text>
                 </View>
+                <View style={styles.divider} />
+                <View style={styles.taskRow}>
+                    <View style={styles.checkbox} />
+                    <Text style={styles.taskText}>Prepare for History Quiz</Text>
+                </View>
             </Card>
+
+            <View style={{ height: 100 }} />
         </ScrollView>
     );
 }
@@ -60,51 +108,109 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: theme.spacing.m,
+        backgroundColor: theme.colors.background,
     },
     header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: theme.spacing.l,
-        marginTop: theme.spacing.m,
+        marginTop: theme.spacing.s,
     },
     greeting: {
-        ...theme.typography.h3,
+        ...theme.typography.body,
         color: theme.colors.textSecondary,
+        marginBottom: 4,
     },
     title: {
-        ...theme.typography.h1,
+        ...theme.typography.h2,
         color: theme.colors.text,
+    },
+    profileButton: {
+        padding: 4,
     },
     heroCard: {
         backgroundColor: theme.colors.primary,
         marginBottom: theme.spacing.xl,
+        padding: theme.spacing.l,
+        borderRadius: theme.borderRadius.xl,
+        ...theme.shadows.hover,
+        shadowColor: theme.colors.primary,
+    },
+    heroContent: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: theme.spacing.m,
+    },
+    heroTextContainer: {
+        flex: 1,
     },
     heroTitle: {
-        ...theme.typography.h2,
+        ...theme.typography.h3,
         color: '#FFFFFF',
+        marginBottom: 4,
     },
     heroSubtitle: {
         ...theme.typography.body,
-        color: 'rgba(255, 255, 255, 0.8)',
-        marginTop: theme.spacing.s,
+        color: 'rgba(255, 255, 255, 0.9)',
+        fontWeight: '500',
+    },
+    heroIcon: {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        padding: 8,
+        borderRadius: 12,
+    },
+    progressBarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: theme.spacing.m,
+        gap: theme.spacing.s,
     },
     progressBar: {
-        height: 6,
+        flex: 1,
+        height: 8,
         backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        borderRadius: 3,
-        marginBottom: theme.spacing.l,
+        borderRadius: 4,
     },
     progressFill: {
         height: '100%',
         backgroundColor: '#FFFFFF',
-        borderRadius: 3,
+        borderRadius: 4,
+    },
+    progressText: {
+        color: '#FFFFFF',
+        fontWeight: '700',
+        fontSize: 14,
+    },
+    motivationText: {
+        ...theme.typography.caption,
+        color: 'rgba(255, 255, 255, 0.9)',
+        marginBottom: theme.spacing.l,
     },
     heroBtn: {
         backgroundColor: '#FFFFFF',
+        borderRadius: theme.borderRadius.m,
+        paddingVertical: 12,
+    },
+    heroBtnText: {
+        color: theme.colors.primary,
+        fontWeight: '700',
+    },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: theme.spacing.m,
     },
     sectionTitle: {
         ...theme.typography.h3,
         color: theme.colors.text,
-        marginBottom: theme.spacing.m,
+    },
+    seeAll: {
+        ...theme.typography.body,
+        color: theme.colors.primary,
+        fontWeight: '600',
     },
     grid: {
         flexDirection: 'row',
@@ -117,9 +223,14 @@ const styles = StyleSheet.create({
     actionCard: {
         alignItems: 'center',
         paddingVertical: theme.spacing.l,
+        borderRadius: theme.borderRadius.l,
     },
-    actionIcon: {
-        fontSize: 32,
+    iconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
         marginBottom: theme.spacing.s,
     },
     actionLabel: {
@@ -128,21 +239,36 @@ const styles = StyleSheet.create({
         color: theme.colors.text,
     },
     taskCard: {
-        gap: theme.spacing.m,
+        padding: 0,
+        overflow: 'hidden',
     },
     taskRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: theme.spacing.s,
+        padding: theme.spacing.m,
+        gap: theme.spacing.m,
     },
-    dot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: theme.colors.secondary,
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        borderWidth: 2,
+        borderColor: theme.colors.border,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     taskText: {
         ...theme.typography.body,
         color: theme.colors.text,
+        flex: 1,
+    },
+    completedTask: {
+        textDecorationLine: 'line-through',
+        color: theme.colors.textSecondary,
+    },
+    divider: {
+        height: 1,
+        backgroundColor: theme.colors.border,
+        marginLeft: theme.spacing.m + 24 + theme.spacing.m, // Align with text
     },
 });
